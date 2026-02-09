@@ -87,25 +87,25 @@
   <section class="p-10 bg-pink-100">
     <h2 class="text-2xl font-semibold text-center mb-6">Book Your Appointment</h2>
 
-    <form class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4">
+    <form id="bookingForm" onsubmit="sendToWhatsApp(event)" class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4">
       <div>
         <label class="block font-medium">Name</label>
-        <input type="text" class="w-full border p-2 rounded-lg" placeholder="Enter your name" required />
+        <input id="name" type="text" class="w-full border p-2 rounded-lg" placeholder="Enter your name" required />
       </div>
 
       <div>
         <label class="block font-medium">Phone</label>
-        <input type="tel" class="w-full border p-2 rounded-lg" placeholder="Enter your phone number" required />
+        <input id="phone" type="tel" class="w-full border p-2 rounded-lg" placeholder="Enter your phone number" required />
       </div>
 
       <div>
         <label class="block font-medium">Event Date</label>
-        <input type="date" class="w-full border p-2 rounded-lg" required />
+        <input id="date" type="date" class="w-full border p-2 rounded-lg" required />
       </div>
 
       <div>
         <label class="block font-medium">Event Type</label>
-        <select class="w-full border p-2 rounded-lg" required>
+        <select id="event" class="w-full border p-2 rounded-lg" required>
           <option>Bridal</option>
           <option>Engagement</option>
           <option>Party</option>
@@ -115,7 +115,7 @@
 
       <div>
         <label class="block font-medium">Message</label>
-        <textarea class="w-full border p-2 rounded-lg" rows="4" placeholder="Enter your requirements"></textarea>
+        <textarea id="message" class="w-full border p-2 rounded-lg" rows="4" placeholder="Enter your requirements"></textarea>
       </div>
 
       <button type="submit" class="w-full bg-pink-400 text-white p-3 rounded-xl font-semibold hover:bg-pink-500">
@@ -132,6 +132,24 @@
      target="_blank">
      WhatsApp
   </a>
+
+  <script>
+    function sendToWhatsApp(event) {
+      event.preventDefault();
+
+      var name = document.getElementById("name").value;
+      var phone = document.getElementById("phone").value;
+      var date = document.getElementById("date").value;
+      var eventType = document.getElementById("event").value;
+      var message = document.getElementById("message").value;
+
+      var whatsappMessage = `New Booking Request:%0AName: ${name}%0APhone: ${phone}%0AEvent Date: ${date}%0AEvent Type: ${eventType}%0AMessage: ${message}`;
+
+      var whatsappURL = `https://wa.me/919550169706?text=${whatsappMessage}`;
+
+      window.open(whatsappURL, "_blank");
+    }
+  </script>
 
 </body>
 </html>
