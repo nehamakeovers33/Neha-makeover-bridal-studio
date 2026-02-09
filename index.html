@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://script.google.com; script-src 'self' https://cdn.tailwindcss.com https://script.google.com; connect-src https://script.google.com; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com;" />
+  <meta name="referrer" content="no-referrer" />
   <title>NEHA MAKEOVER BRIDAL STUDIO</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -106,12 +108,12 @@
       <input type="text" id="website" style="display:none" />
       <div>
         <label class="block font-medium">Name</label>
-        <input id="name" type="text" class="w-full border p-2 rounded-lg" placeholder="Enter your name" required />
+        <input id="name" type="text" maxlength="40" autocomplete="off" class="w-full border p-2 rounded-lg" placeholder="Enter your name" required />
       </div>
 
       <div>
         <label class="block font-medium">Phone</label>
-        <input id="phone" type="tel" class="w-full border p-2 rounded-lg" placeholder="Enter your phone number" required />
+        <input id="phone" type="tel" pattern="[0-9]{10}" maxlength="10" autocomplete="off" class="w-full border p-2 rounded-lg" placeholder="Enter 10 digit phone number" required />
       </div>
 
       <div>
@@ -131,7 +133,7 @@
 
       <div>
         <label class="block font-medium">Message</label>
-        <textarea id="message" class="w-full border p-2 rounded-lg" rows="4" placeholder="Enter your requirements"></textarea>
+        <textarea id="message" maxlength="300" autocomplete="off" class="w-full border p-2 rounded-lg" rows="4" placeholder="Enter your requirements"></textarea>
       </div>
 
       <button type="submit" class="w-full bg-gradient-to-r from-rose-400 to-pink-500 text-white p-3 rounded-2xl font-semibold shadow-md hover:scale-105 transition">
@@ -155,6 +157,10 @@
   </a>
 
   <script>
+    function sanitizeInput(input){
+      return input.replace(/[<>]/g,'');
+    }
+
     function submitBooking(event) {
       if(document.getElementById('website').value !== ''){
         alert('Spam detected');
@@ -162,30 +168,24 @@
       }
       event.preventDefault();
 
-      var name = document.getElementById("name").value;
-      var phone = document.getElementById("phone").value;
+      var name = sanitizeInput(document.getElementById("name").value);
+      var phone = sanitizeInput(document.getElementById("phone").value);
       var date = document.getElementById("date").value;
       var eventType = document.getElementById("event").value;
-      var message = document.getElementById("message").value;
+      var message = sanitizeInput(document.getElementById("message").value);
 
       // IMPORTANT: Replace below URL with your Google Apps Script Web App URL
-      var scriptURL = "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE";
+      // Store booking in local storage
+      let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      bookings.push({name, phone, date, eventType, message, status:'Pending', time:new Date().toLocaleString()});
 
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({
-          name: name,
-          phone: phone,
-          date: date,
-          eventType: eventType,
-          message: message
-        }),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(response => alert("Booking Submitted Successfully!"))
-      .catch(error => alert("Error submitting booking. Please try again."));
+      var notifyMsg = `New Booking:%0A${name}%0A${phone}%0A${date}%0A${eventType}`;
+      window.open(`https://wa.me/919550169706?text=${notifyMsg}`,'_blank');
+      localStorage.setItem("bookings", JSON.stringify(bookings));
+
+      alert("Booking Submitted Successfully!");
+      document.getElementById("bookingForm").reset();
+      document.querySelector('button[type="submit"]').disabled = false;
     }
   </script>
 
@@ -208,6 +208,136 @@
       <li>Prices are subject to change without prior notice.</li>
     </ul>
   </section>
+
+  <!-- Admin Login Modal -->
+  <div id="adminPanel" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-96">
+      <h2 class="text-xl font-semibold mb-4 text-center">Admin Login</h2>
+      <input id="adminPassword" type="password" placeholder="Enter Admin Password" class="w-full border p-2 rounded mb-4" />
+      <button onclick="checkAdmin()" class="w-full bg-pink-500 text-white p-2 rounded">Login</button>
+      <button onclick="closeAdmin()" class="w-full mt-2 text-gray-500">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Admin Button -->
+  <button onclick="openAdmin()" class="fixed bottom-6 left-6 bg-gray-800 text-white p-3 rounded-full shadow">
+    Admin
+  </button>
+
+  <script>
+    function openAdmin(){
+      document.getElementById("adminPanel").classList.remove("hidden");
+    }
+
+    function closeAdmin(){
+      document.getElementById("adminPanel").classList.add("hidden");
+    }
+
+    function checkAdmin(){
+      var password = document.getElementById("adminPassword").value;
+      if(password === "nehaadmin123"){
+        showDashboard();
+      } else {
+        alert("Wrong Password");
+      }
+    }
+  </script>
+
+  <!-- Admin Dashboard -->
+  <div id="adminDashboard" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto">
+    <div class="bg-white p-6 rounded-2xl shadow-lg w-11/12 max-h-[90vh] overflow-auto">
+      <h2 class="text-2xl font-semibold mb-4 text-center">Booking Dashboard</h2>
+      <div class="flex gap-3 justify-center mb-4">
+        <button onclick="exportBookings()" class="bg-green-500 text-white px-4 py-2 rounded">Export Excel</button>
+        <button onclick="clearBookings()" class="bg-red-500 text-white px-4 py-2 rounded">Delete All</button>
+      </div>
+      <table class="w-full border">
+        <thead class="bg-pink-200">
+          <tr>
+            <th class="border p-2">Name</th>
+            <th class="border p-2">Phone</th>
+            <th class="border p-2">Date</th>
+            <th class="border p-2">Event</th>
+            <th class="border p-2">Message</th>
+            <th class="border p-2">Status</th>
+            <th class="border p-2">Time</th>
+            <th class="border p-2">Action</th>
+          </tr>
+        </thead>
+        <tbody id="dashboardData"></tbody>
+      </table>
+      <button onclick="closeDashboard()" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function showDashboard(){
+      closeAdmin();
+      document.getElementById("adminDashboard").classList.remove("hidden");
+      let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      let table = document.getElementById("dashboardData");
+      table.innerHTML = "";
+      bookings.forEach((b,index) => {
+        table.innerHTML += `<tr>
+          <td class="border p-2">${b.name}</td>
+          <td class="border p-2">${b.phone}</td>
+          <td class="border p-2">${b.date}</td>
+          <td class="border p-2">${b.eventType}</td>
+          <td class="border p-2">${b.message}</td>
+          <td class="border p-2">
+            <select onchange="updateStatus(${index},this.value)" class="border p-1">
+              <option ${b.status==='Pending'?'selected':''}>Pending</option>
+              <option ${b.status==='Confirmed'?'selected':''}>Confirmed</option>
+              <option ${b.status==='Cancelled'?'selected':''}>Cancelled</option>
+            </select>
+          </td>
+          <td class="border p-2">${b.time}</td>
+          <td class="border p-2">
+            <button onclick="deleteBooking(${index})" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+          </td>
+        </tr>`;
+      });
+    }
+
+    function closeDashboard(){
+      document.getElementById("adminDashboard").classList.add("hidden");
+    }
+
+    function deleteBooking(index){
+      let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      bookings.splice(index,1);
+      localStorage.setItem("bookings",JSON.stringify(bookings));
+      showDashboard();
+    }
+
+    function updateStatus(index,status){
+      let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      bookings[index].status=status;
+      localStorage.setItem("bookings",JSON.stringify(bookings));
+    }
+
+    function clearBookings(){
+      if(confirm('Delete all bookings?')){
+        localStorage.removeItem('bookings');
+        showDashboard();
+      }
+    }
+
+    function exportBookings(){
+      let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
+      let csv = 'Name,Phone,Date,Event,Message,Status,Time
+';
+      bookings.forEach(b=>{
+        csv += `${b.name},${b.phone},${b.date},${b.eventType},${b.message},${b.status},${b.time}
+`;
+      });
+      let blob = new Blob([csv],{type:'text/csv'});
+      let a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download='bookings.csv';
+      a.click();
+    }
+  </script>
 
 </body>
 </html>
