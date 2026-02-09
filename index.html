@@ -41,7 +41,6 @@
             <td class="border p-3">HD Bridal Makeup</td>
             <td class="border p-3">₹15,000</td>
           </tr>
-          
           <tr>
             <td class="border p-3">Engagement Makeup</td>
             <td class="border p-3">₹8,000</td>
@@ -54,7 +53,7 @@
             <td class="border p-3">Hairstyling</td>
             <td class="border p-3">₹3,000</td>
           </tr>
-                  <tr>
+          <tr>
             <td class="border p-3">Bridal Mehndi</td>
             <td class="border p-3">₹3,000</td>
           </tr>
@@ -68,9 +67,7 @@
     <h2 class="text-3xl font-semibold mb-6">Client Satisfaction</h2>
     <p class="mb-6 text-lg">Rated 5 Stars by Happy Brides</p>
 
-    <div class="text-4xl text-yellow-400 mb-4">
-      ★★★★★
-    </div>
+    <div class="text-4xl text-yellow-400 mb-4">★★★★★</div>
 
     <p class="italic max-w-xl mx-auto text-gray-700">
       NEHA MAKEOVER BRIDAL STUDIO is trusted by brides for premium quality bridal makeup, professional service and long lasting flawless looks.
@@ -99,62 +96,59 @@
   <!-- Footer -->
   <footer class="bg-pink-200 p-4 text-center">
     <p>© 2026 NEHA MAKEOVER BRIDAL STUDIO. All Rights Reserved.</p>
-    <!-- Booking Form Section -->
-  <section class="p-10 bg-pink-100">
-    <h2 class="text-2xl font-semibold text-center mb-6">Book Your Appointment</h2>
 
-    <form id="bookingForm" onsubmit="submitBooking(event)" class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4">
-      <!-- Hidden Spam Protection Field -->
-      <input type="text" id="website" style="display:none" />
-      <div>
-        <label class="block font-medium">Name</label>
-        <input id="name" type="text" maxlength="40" autocomplete="off" class="w-full border p-2 rounded-lg" placeholder="Enter your name" required />
-      </div>
+    <section class="p-10 bg-pink-100">
+      <h2 class="text-2xl font-semibold text-center mb-6">Book Your Appointment</h2>
 
-      <div>
-        <label class="block font-medium">Phone</label>
-        <input id="phone" type="tel" pattern="[0-9]{10}" maxlength="10" autocomplete="off" class="w-full border p-2 rounded-lg" placeholder="Enter 10 digit phone number" required />
-      </div>
+      <form id="bookingForm" onsubmit="submitBooking(event)" class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4">
+        <input type="text" id="website" style="display:none" />
 
-      <div>
-        <label class="block font-medium">Event Date</label>
-        <input id="date" type="date" class="w-full border p-2 rounded-lg" required />
-      </div>
+        <div>
+          <label class="block font-medium">Name</label>
+          <input id="name" type="text" maxlength="40" autocomplete="off" class="w-full border p-2 rounded-lg" placeholder="Enter your name" required />
+        </div>
 
-      <div>
-        <label class="block font-medium">Event Type</label>
-        <select id="event" class="w-full border p-2 rounded-lg" required>
-          <option>Bridal</option>
-          <option>Engagement</option>
-          <option>Party</option>
-          <option>Other</option>
-        </select>
-      </div>
+        <div>
+          <label class="block font-medium">Phone</label>
+          <input id="phone" type="tel" pattern="[0-9]{10}" maxlength="10" autocomplete="off" class="w-full border p-2 rounded-lg" placeholder="Enter 10 digit phone number" required />
+        </div>
 
-      <div>
-        <label class="block font-medium">Message</label>
-        <textarea id="message" maxlength="300" autocomplete="off" class="w-full border p-2 rounded-lg" rows="4" placeholder="Enter your requirements"></textarea>
-      </div>
+        <div>
+          <label class="block font-medium">Event Date</label>
+          <input id="date" type="date" class="w-full border p-2 rounded-lg" required />
+        </div>
 
-      <button type="submit" class="w-full bg-gradient-to-r from-rose-400 to-pink-500 text-white p-3 rounded-2xl font-semibold shadow-md hover:scale-105 transition">
-        Submit Booking Request
-      </button>
-    </form>
-  </section>
+        <div>
+          <label class="block font-medium">Event Type</label>
+          <select id="event" class="w-full border p-2 rounded-lg" required>
+            <option>Bridal</option>
+            <option>Engagement</option>
+            <option>Party</option>
+            <option>Other</option>
+          </select>
+        </div>
 
-  <!-- Privacy & Terms Section -->
-  <section class="p-6 bg-white text-center text-sm">
-    <a href="#privacy" class="underline mx-2">Privacy Policy</a>
-    <a href="#terms" class="underline mx-2">Terms & Conditions</a>
-  </section>
-</footer>
+        <div>
+          <label class="block font-medium">Message</label>
+          <textarea id="message" maxlength="300" autocomplete="off" class="w-full border p-2 rounded-lg" rows="4" placeholder="Enter your requirements"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-rose-400 to-pink-500 text-white p-3 rounded-2xl font-semibold shadow-md hover:scale-105 transition">
+          Submit Booking Request
+        </button>
+      </form>
+    </section>
+
+    <section class="p-6 bg-white text-center text-sm">
+      <a href="#privacy" class="underline mx-2">Privacy Policy</a>
+      <a href="#terms" class="underline mx-2">Terms & Conditions</a>
+    </section>
+  </footer>
 
   <!-- WhatsApp Floating Button -->
   <a href="https://wa.me/919550169706?text=Hello%2C%20I%20want%20to%20book%20a%20makeup%20appointment" 
      class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600" 
-     target="_blank">
-     WhatsApp
-  </a>
+     target="_blank">WhatsApp</a>
 
   <script>
     function sanitizeInput(input){
@@ -166,6 +160,7 @@
         alert('Spam detected');
         return;
       }
+
       event.preventDefault();
 
       var name = sanitizeInput(document.getElementById("name").value);
@@ -183,7 +178,6 @@
 
       alert("Booking Submitted Successfully!");
       document.getElementById("bookingForm").reset();
-      document.querySelector('button[type="submit"]').disabled = false;
     }
   </script>
 
@@ -191,7 +185,7 @@
   <section id="privacy" class="p-10 bg-gray-100 text-sm">
     <h2 class="text-xl font-semibold mb-4 text-center">Privacy Policy</h2>
     <p class="max-w-3xl mx-auto">
-      NEHA MAKEOVER BRIDAL STUDIO respects your privacy. Any personal details such as name, phone number, and event details collected through this website are used only for booking and communication purposes. We do not share or sell your information to third parties. Your booking information is stored securely and accessed only by the business owner.
+      NEHA MAKEOVER BRIDAL STUDIO respects your privacy.
     </p>
   </section>
 
@@ -218,9 +212,7 @@
   </div>
 
   <!-- Admin Button -->
-  <button onclick="openAdmin()" class="fixed bottom-6 left-6 bg-gray-800 text-white p-3 rounded-full shadow">
-    Admin
-  </button>
+  <button onclick="openAdmin()" class="fixed bottom-6 left-6 bg-gray-800 text-white p-3 rounded-full shadow">Admin</button>
 
   <script>
     function openAdmin(){
@@ -275,6 +267,7 @@
       let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
       let table = document.getElementById("dashboardData");
       table.innerHTML = "";
+
       bookings.forEach((b,index) => {
         table.innerHTML += `<tr>
           <td class="border p-2">${b.name}</td>
@@ -324,7 +317,25 @@
     function exportBookings(){
       let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
       let csv = 'Name,Phone,Date,Event,Message,Status,Time\n';
+
       bookings.forEach(b=>{
         csv += `${b.name},${b.phone},${b.date},${b.eventType},${b.message},${b.status},${b.time}\n`;
       });
-      lea
+
+      let blob = new Blob([csv],{type:'text/csv'});
+      let a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download='bookings.csv';
+      a.click();
+    }
+
+    // ---- Basic Runtime Tests ----
+    (function runTests(){
+      console.assert(typeof showDashboard === 'function', 'showDashboard should be defined');
+      console.assert(typeof exportBookings === 'function', 'exportBookings should be defined');
+      console.assert(typeof openAdmin === 'function', 'openAdmin should be defined');
+    })();
+  </script>
+
+</body>
+</html>
