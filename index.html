@@ -6,16 +6,16 @@
   <title>NEHA MAKEOVER BRIDAL STUDIO</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-pink-50 font-sans">
+<body class="bg-gradient-to-b from-rose-50 via-pink-50 to-white font-sans text-gray-800">
 
   <!-- Header -->
-  <header class="bg-pink-200 p-6 shadow-md">
+  <header class="bg-gradient-to-r from-rose-400 to-pink-400 text-white p-8 shadow-lg">
     <h1 class="text-3xl font-bold text-center">NEHA MAKEOVER BRIDAL STUDIO</h1>
     <p class="text-center">Professional Bridal Makeup Artist</p>
   </header>
 
   <!-- About Section -->
-  <section class="p-10 text-center">
+  <section class="p-12 text-center">
     <h2 class="text-2xl font-semibold mb-4">About Me</h2>
     <p class="max-w-2xl mx-auto">
       Welcome to NEHA MAKEOVER BRIDAL STUDIO! I am a professional bridal makeup artist specializing in HD and Traditional bridal looks. My goal is to enhance your natural beauty and make your special day unforgettable.
@@ -23,7 +23,7 @@
   </section>
 
   <!-- Services Section -->
-  <section class="p-10 bg-white">
+  <section class="p-12 bg-white shadow-sm rounded-3xl mx-4 my-6">
     <h2 class="text-2xl font-semibold text-center mb-6">Services & Pricing</h2>
 
     <div class="max-w-3xl mx-auto">
@@ -61,6 +61,20 @@
     </div>
   </section>
 
+  <!-- Star Rating Section -->
+  <section class="p-12 bg-gradient-to-r from-pink-100 via-rose-100 to-pink-50 text-center">
+    <h2 class="text-3xl font-semibold mb-6">Client Satisfaction</h2>
+    <p class="mb-6 text-lg">Rated 5 Stars by Happy Brides</p>
+
+    <div class="text-4xl text-yellow-400 mb-4">
+      ★★★★★
+    </div>
+
+    <p class="italic max-w-xl mx-auto text-gray-700">
+      NEHA MAKEOVER BRIDAL STUDIO is trusted by brides for premium quality bridal makeup, professional service and long lasting flawless looks.
+    </p>
+  </section>
+
   <!-- Gallery Section -->
   <section class="p-10">
     <h2 class="text-2xl font-semibold text-center mb-6">Portfolio</h2>
@@ -87,7 +101,9 @@
   <section class="p-10 bg-pink-100">
     <h2 class="text-2xl font-semibold text-center mb-6">Book Your Appointment</h2>
 
-    <form id="bookingForm" onsubmit="sendToWhatsApp(event)" class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4">
+    <form id="bookingForm" onsubmit="submitBooking(event)" class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4">
+      <!-- Hidden Spam Protection Field -->
+      <input type="text" id="website" style="display:none" />
       <div>
         <label class="block font-medium">Name</label>
         <input id="name" type="text" class="w-full border p-2 rounded-lg" placeholder="Enter your name" required />
@@ -118,12 +134,17 @@
         <textarea id="message" class="w-full border p-2 rounded-lg" rows="4" placeholder="Enter your requirements"></textarea>
       </div>
 
-      <button type="submit" class="w-full bg-pink-400 text-white p-3 rounded-xl font-semibold hover:bg-pink-500">
+      <button type="submit" class="w-full bg-gradient-to-r from-rose-400 to-pink-500 text-white p-3 rounded-2xl font-semibold shadow-md hover:scale-105 transition">
         Submit Booking Request
       </button>
     </form>
   </section>
 
+  <!-- Privacy & Terms Section -->
+  <section class="p-6 bg-white text-center text-sm">
+    <a href="#privacy" class="underline mx-2">Privacy Policy</a>
+    <a href="#terms" class="underline mx-2">Terms & Conditions</a>
+  </section>
 </footer>
 
   <!-- WhatsApp Floating Button -->
@@ -134,7 +155,11 @@
   </a>
 
   <script>
-    function sendToWhatsApp(event) {
+    function submitBooking(event) {
+      if(document.getElementById('website').value !== ''){
+        alert('Spam detected');
+        return;
+      }
       event.preventDefault();
 
       var name = document.getElementById("name").value;
@@ -143,13 +168,46 @@
       var eventType = document.getElementById("event").value;
       var message = document.getElementById("message").value;
 
-      var whatsappMessage = `New Booking Request:%0AName: ${name}%0APhone: ${phone}%0AEvent Date: ${date}%0AEvent Type: ${eventType}%0AMessage: ${message}`;
+      // IMPORTANT: Replace below URL with your Google Apps Script Web App URL
+      var scriptURL = "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE";
 
-      var whatsappURL = `https://wa.me/919550169706?text=${whatsappMessage}`;
-
-      window.open(whatsappURL, "_blank");
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          phone: phone,
+          date: date,
+          eventType: eventType,
+          message: message
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => alert("Booking Submitted Successfully!"))
+      .catch(error => alert("Error submitting booking. Please try again."));
     }
   </script>
+
+  <!-- Privacy Policy -->
+  <section id="privacy" class="p-10 bg-gray-100 text-sm">
+    <h2 class="text-xl font-semibold mb-4 text-center">Privacy Policy</h2>
+    <p class="max-w-3xl mx-auto">
+      NEHA MAKEOVER BRIDAL STUDIO respects your privacy. Any personal details such as name, phone number, and event details collected through this website are used only for booking and communication purposes. We do not share or sell your information to third parties. Your booking information is stored securely and accessed only by the business owner.
+    </p>
+  </section>
+
+  <!-- Terms & Conditions -->
+  <section id="terms" class="p-10 bg-white text-sm">
+    <h2 class="text-xl font-semibold mb-4 text-center">Terms & Conditions</h2>
+    <ul class="max-w-3xl mx-auto list-disc space-y-2">
+      <li>Booking confirmation is subject to availability.</li>
+      <li>Advance payment may be required to confirm booking.</li>
+      <li>Please inform any skin allergies before appointment.</li>
+      <li>Cancellation policies may apply.</li>
+      <li>Prices are subject to change without prior notice.</li>
+    </ul>
+  </section>
 
 </body>
 </html>
